@@ -86,8 +86,7 @@ terminal Token      PROCEDURE, IS, INTEGER, TWOP, SEMI, BEGIN, END, EQUAL, FOR, 
 non terminal Object         program, header, body, declarations;
 non terminal Block          block;
 non terminal StatementList  statements;
-non terminal StatementExp   statement;
-non terminal Statement      assigment_statement, for_statement, if_statement, input_statement, output_statement, null_statement;
+non terminal Statement      statement, assigment_statement, for_statement, if_statement, input_statement, output_statement, null_statement;
 non terminal Identifier     identifier;
 non terminal Expression     expression;
 non terminal Digit          digit;
