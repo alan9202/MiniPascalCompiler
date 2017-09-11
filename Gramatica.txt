@@ -1,0 +1,42 @@
+PROGRAM							::=	procedure HEADER BODY
+HEADER							::=	IDENTIFIER is
+BODY								::=	DECLARATIONS BLOCK
+DECLARATIONS				::= IDENTIFIER : Integer ; |
+												IDENTIFIER : Integer ; DECLARATIONS
+BLOCK								::= begin STATEMENTS end;
+STATEMENTS					::= STATEMENT |
+												STATEMENT STATEMENTS
+STATEMENT						::= ASSIGMENT_STATEMENT |
+												FOR_STATEMENT				|
+												IF_STATEMENT				|
+												INPUT_STATEMENT			|
+												OUTPUT_STATEMENT		|
+												NULL_STATEMENT
+ASSIGMENT_STATEMENT	::= IDENTIFIER := EXPRESSION;
+FOR_STATEMENT				::= for IDENTIFIER in CONSTANT to CONSTANT
+												loop
+													STATEMENTS
+												endloop
+IF_STATEMENT				::= if EXPRESSION then
+													STATEMENTS
+												else
+													STATEMENTS
+												endif
+INPUT_STATEMENT			::= input(IDENTIFIER)
+OUTPUT_STATEMENT		::= output(IDENTIFIER)
+NULL_STATEMENT			::= null
+EXPRESSION					::= TERMN |
+												ADD_OP
+TERMN								::= FACTOR |
+												MULT_OP
+FACTOR							::= IDENTIFIER |
+												(EXPRESSION) |
+												CONSTANT
+IDENTIFIER					::= a | b | c | ... | z
+ADD_OP							::= EXPRESSION + TERMN |
+												EXPRESSION - TERMN
+MULT_OP							::= TERMN * FACTOR |
+												TERMN / FACTOR
+CONSTANT						::= DIGIT |
+												DIGIT CONSTANT
+DIGIT								::= 0 | 1 | 2 | ... | 9

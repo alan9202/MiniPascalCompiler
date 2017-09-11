@@ -1,0 +1,132 @@
+/* ---------------Seccion de Importacion y Empaquetamiento--------------------*/
+package com.uaem.main;
+/*
+    Import the class java_cup.runtime.*
+*/
+import java_cup.runtime.*;
+import java.io.FileReader;
+import com.uaem.util.OperationType;
+import com.uaem.util.Util;
+import com.uaem.classes.Block;
+import com.uaem.classes.StatementList;
+import com.uaem.classes.StatementExp;
+import com.uaem.classes.Statement;
+import com.uaem.classes.Identifier;
+import com.uaem.classes.Expression;
+import com.uaem.classes.Digit;
+import com.uaem.classes.AssigmentStm;
+import com.uaem.classes.IfStm;
+import com.uaem.classes.ForStm;
+import com.uaem.classes.InputStm;
+import com.uaem.classes.OutputStm;
+import com.uaem.classes.NullStm;
+
+/* ---------------Seccion de Codigo de Usuario--------------------*/
+
+/*
+    Codigo del parser, se copia integramente a la clase final.
+    Agregamos el manejo de errores.
+*/
+parser code {:
+
+    /*
+        Reporte de error encontrado.
+    */
+    public void report_error(String message, Object info) {
+        StringBuilder sb = new StringBuilder("Error");
+        if (info instanceof java_cup.runtime.Symbol) {
+            java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+            if (s.left >= 0) {
+                sb.append(" in line "+(s.left+1));
+                if (s.right >= 0) {
+                    sb.append(", column "+(s.right+1));
+                }
+            }
+        }
+        sb.append(" : "+message);
+        System.err.println(sb);
+    }
+
+    /*
+        Cuando se encuentra un error donde el sistema no puede recuperarse, se lanza un error fatal. Se despliega el mensaje de error y se finaliza la ejecucion.
+    */
+    public void report_fatal_error(String message, Object info) {
+        report_error(message, info);
+        System.exit(1);
+    }
+
+    /*
+        Metodo main para garantizar la ejecucion del analizador lexico y sintactico, ademas que se pase como parametro la tabla de simbolos correspondiente.
+    */
+    public static void main(String[] args) {
+        try {
+            AnalizadorSintactico asin = new AnalizadorSintactico(new AnalizadorLexicografico( new FileReader(args[0])));
+            Object result = asin.parse().value;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+:};
+
+/* ------------Declaracion de Simbolos Terminales y No Terminales---------- */
+
+/*
+    Terminales (tokens obtenidos por el analizador lexico).
+    Terminales que no tienen un valor son listados primero, los terminales que tienen un valor como los enteros son listados en la segunda o demas lineas.
+*/
+terminal Token      PROCEDURE, IS, INTEGER, TWOP, SEMI, BEGIN, END, EQUAL, FOR, IN, TO, LOOP, ENDLOOP,
+                    IF, THEN, ELSE, ENDIF, INPUT, OUTPUT, PIZQ, PDER, NULL, OP_ADD, OP_SUB,
+                    OP_MULT, OP_DIV, DIGITO, IDENTIFIER;
+
+/*
+    No terminales usados en la seccion gramatical.
+    Primero se lista los no terminales que tienen un valor Object y despues se lista los no terminales que tienen un entero.
+    Un Object se refiere a que no tienen tipo, pudiendo ser entero o String.
+*/
+non terminal Object         program, header, body, declarations;
+non terminal Block          block;
+non terminal StatementList  statements;
+non terminal StatementExp   statement;
+non terminal Statement      assigment_statement, for_statement, if_statement, input_statement, output_statement, null_statement;
+non terminal Identifier     identifier;
+non terminal Expression     expression;
+non terminal Digit          digit;
+
+/* -------------Seccion de Predencia y Asociatividad----------- */
+
+/*
+    Precedencia de los no terminales, no sirve con simbolos terminales.
+    Por eso no la usamos.
+    Además indica si se asocia a izquierda o derecha.
+*/
+
+/* ------------------- Seccion de la Gramatica ------------------------ */
+
+program                 ::= PROCEDURE header body;
+header                  ::= identifier IS;
+body                    ::= declarations block;
+declarations            ::= identifier TWOP INTEGER SEMI |
+                            identifier TWOP INTEGER SEMI declarations;
+block                   ::= BEGIN statements: stms END SEMI;
+statements              ::= statement: stm |
+                            statement: stm statements: stms;
+statement               ::= assigment_statement: astm |
+                            null_statement: nstm      |
+                            for_statement: fstm       |
+                            if_statement: istm        |
+                            input_statement: instm    |
+                            output_statement: ostmn;
+assigment_statement     ::= identifier : id EQUAL expression : ex SEMI;
+if_statement            ::= IF expression: ex THEN statements: stm1 ELSE statements: stm2 ENDIF
+for_statement           ::= FOR identifier: id IN constant: cons1 TO constant: cons2 LOOP statements: stm ENDLOOP
+input_statement         ::= INPUT PIZQ identifier: id PDER SEMI;
+output_statement        ::= OUTPUT PIZQ identifier : id PDER SEMI;
+null_statement          ::= NULL SEMI;
+expression              ::= expression: ex1 OP_ADD expression: ex2  |
+                            expression: ex1 OP_SUB expression: ex2  |
+                            expression: ex1 OP_MULT expression: ex2 |
+                            expression: ex1 OP_DIV expression: ex2  |
+                            PIZQ  expression: ex  PDER              |
+                            DIGITO: digit                           |
+                            identifier: id;
+identifier              ::= IDENTIFIER : id;
