@@ -89,7 +89,7 @@ non terminal StatementList  statements;
 non terminal Statement      statement, assigment_statement, for_statement, if_statement, input_statement, output_statement, null_statement;
 non terminal Identifier     identifier;
 non terminal Expression     expression;
-non terminal Digit          digit;
+non terminal Digit          constant, digit;
 
 /* -------------Seccion de Predencia y Asociatividad----------- */
 
@@ -134,8 +134,8 @@ statement               ::= assigment_statement: astm |
                             input_statement: instm    |
                             output_statement: ostmn;
 assigment_statement     ::= identifier : id EQUAL expression : ex SEMI;
-if_statement            ::= IF expression: ex THEN statements: stm1 ELSE statements: stm2 ENDIF
-for_statement           ::= FOR identifier: id IN constant: cons1 TO constant: cons2 LOOP statements: stm ENDLOOP
+if_statement            ::= IF expression: ex THEN statements: stm1 ELSE statements: stm2 ENDIF;
+for_statement           ::= FOR identifier: id IN constant: cons1 TO constant: cons2 LOOP statements: stm ENDLOOP;
 input_statement         ::= INPUT PIZQ identifier: id PDER SEMI;
 output_statement        ::= OUTPUT PIZQ identifier : id PDER SEMI;
 null_statement          ::= NULL: null SEMI
@@ -147,6 +147,7 @@ expression              ::= expression: ex1 OP_ADD expression: ex2  |
                             expression: ex1 OP_MULT expression: ex2 |
                             expression: ex1 OP_DIV expression: ex2  |
                             PIZQ  expression: ex  PDER              |
-                            DIGITO: digit                           |
+                            constant: cons                          |
                             identifier: id;
+constant                ::= DIGITO: digit;
 identifier              ::= IDENTIFIER : id;
