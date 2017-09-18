@@ -106,11 +106,29 @@ header                  ::= identifier IS;
 body                    ::= declarations block;
 declarations            ::= identifier TWOP INTEGER SEMI |
                             identifier TWOP INTEGER SEMI declarations;
-block                   ::= BEGIN statements: stms END SEMI;
-statements              ::= statement: stm |
-                            statement: stm statements: stms;
+block                   ::= BEGIN statements: stms END SEMI
+                            {:
+                              RESULT = new Block(stms);
+                            :};
+statements              ::= statement: stm
+                            {:
+                              RESULT = new StatementList().addElement(stm);
+                            :}  |
+                            statement: stm statements: stms
+                            {:
+                              if (stms == null) {
+                                stms = new StatementList();
+                              }
+
+                              stms.addElement(stm);
+
+                              RESULT = stms;
+                            :};
 statement               ::= assigment_statement: astm |
-                            null_statement: nstm      |
+                            null_statement: nstm
+                            {:
+                              RESULT = nstm;
+                            :}  |
                             for_statement: fstm       |
                             if_statement: istm        |
                             input_statement: instm    |
@@ -120,7 +138,10 @@ if_statement            ::= IF expression: ex THEN statements: stm1 ELSE stateme
 for_statement           ::= FOR identifier: id IN constant: cons1 TO constant: cons2 LOOP statements: stm ENDLOOP
 input_statement         ::= INPUT PIZQ identifier: id PDER SEMI;
 output_statement        ::= OUTPUT PIZQ identifier : id PDER SEMI;
-null_statement          ::= NULL SEMI;
+null_statement          ::= NULL: null SEMI
+                            {:
+                              RESULT = new NullStm(null.getLine(), null.getColumn());
+                            :};
 expression              ::= expression: ex1 OP_ADD expression: ex2  |
                             expression: ex1 OP_SUB expression: ex2  |
                             expression: ex1 OP_MULT expression: ex2 |
