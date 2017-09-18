@@ -1,5 +1,8 @@
 package com.uaem.classes;
 
-public class ForStm {
-    
+public class ForStm extends Statement{
+
+    @Override
+    public void doAction() {
+    }
 }

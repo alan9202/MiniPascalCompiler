@@ -1,5 +1,8 @@
 package com.uaem.classes;
 
-public class InputStm {
-    
+public class InputStm extends Statement{
+
+    @Override
+    public void doAction() {
+    }
 }

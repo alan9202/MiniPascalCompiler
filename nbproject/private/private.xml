@@ -3,10 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Surface/Dropbox/Integracion%20JFLex%20y%20CUP/GramaticaPascal/src/gramaticapascal/GramaticaPascal.java</file>
-            <file>file:/C:/Users/Surface/Dropbox/Integracion%20JFLex%20y%20CUP/GramaticaPascal/src/gramaticapascal/OperationType.java</file>
-            <file>file:/C:/Users/Surface/Dropbox/Integracion%20JFLex%20y%20CUP/GramaticaPascal/src/gramaticapascal/AnalizadorSintactico.java</file>
-            <file>file:/C:/Users/Surface/Dropbox/Integracion%20JFLex%20y%20CUP/GramaticaPascal/src/gramaticapascal/Util.java</file>
+            <file>file:/C:/Users/Surface/Dropbox/Integracion%20JFLex%20y%20CUP/GramaticaPascal/src/com/uaem/classes/Statement.java</file>
+            <file>file:/C:/Users/Surface/Dropbox/Integracion%20JFLex%20y%20CUP/GramaticaPascal/src/com/uaem/classes/StatementExp.java</file>
         </group>
     </open-files>
 </project-private>

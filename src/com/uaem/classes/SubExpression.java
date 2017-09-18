@@ -1,6 +1,6 @@
 package com.uaem.classes;
 
-public class IfStm extends Statement{
+public class SubExpression extends Expression{
 
     @Override
     public void doAction() {
