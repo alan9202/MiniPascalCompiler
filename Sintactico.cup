@@ -37,9 +37,9 @@ parser code {:
         if (info instanceof java_cup.runtime.Symbol) {
             java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
             if (s.left >= 0) {
-                sb.append(" in line "+(s.left+1));
+                sb.append(" in line "+(s.left));
                 if (s.right >= 0) {
-                    sb.append(", column "+(s.right+1));
+                    sb.append(", column "+(s.right));
                 }
             }
         }
