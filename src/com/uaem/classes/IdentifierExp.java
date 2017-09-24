@@ -1,19 +1,20 @@
 package com.uaem.classes;
 
-public class InputStm extends Statement{
-
+public class IdentifierExp extends Expression{
+    
     private Identifier id;
     private int line;
     private int column;
 
-    public InputStm(Identifier id, int line, int column) {
+    public IdentifierExp(Identifier id, int line, int column) {
         this.id = id;
         this.line = line;
         this.column = column;
     }
-
+    
     @Override
     public void doAction() {
+        
     }
 
     public Identifier getId() {

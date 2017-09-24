@@ -5,6 +5,12 @@ public class Token {
     private int line;
     private int column;
 
+    public Token(Object value, int line, int column) {
+        this.value = value;
+        this.line = line;
+        this.column = column;
+    }
+
     /**
      * @return the value
      */

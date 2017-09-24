@@ -1,27 +1,28 @@
 package com.uaem.classes;
 
-public class InputStm extends Statement{
-
-    private Identifier id;
+public class DigitExp extends Expression{
+    
+    private Digit digit;
     private int line;
     private int column;
 
-    public InputStm(Identifier id, int line, int column) {
-        this.id = id;
+    public DigitExp(Digit digit, int line, int column) {
+        this.digit = digit;
         this.line = line;
         this.column = column;
     }
-
+    
     @Override
     public void doAction() {
+        
     }
 
-    public Identifier getId() {
-        return id;
+    public Digit getDigit() {
+        return digit;
     }
 
-    public void setId(Identifier id) {
-        this.id = id;
+    public void setDigit(Digit digit) {
+        this.digit = digit;
     }
 
     public int getLine() {

@@ -5,21 +5,8 @@ package com.uaem.main;
 */
 import java_cup.runtime.*;
 import java.io.FileReader;
-import com.uaem.util.OperationType;
-import com.uaem.util.Util;
-import com.uaem.classes.Block;
-import com.uaem.classes.StatementList;
-import com.uaem.classes.StatementExp;
-import com.uaem.classes.Statement;
-import com.uaem.classes.Identifier;
-import com.uaem.classes.Expression;
-import com.uaem.classes.Digit;
-import com.uaem.classes.AssigmentStm;
-import com.uaem.classes.IfStm;
-import com.uaem.classes.ForStm;
-import com.uaem.classes.InputStm;
-import com.uaem.classes.OutputStm;
-import com.uaem.classes.NullStm;
+import com.uaem.util.*;
+import com.uaem.classes.*;
 
 /* ---------------Seccion de Codigo de Usuario--------------------*/
 
@@ -89,7 +76,7 @@ non terminal StatementList  statements;
 non terminal Statement      statement, assigment_statement, for_statement, if_statement, input_statement, output_statement, null_statement;
 non terminal Identifier     identifier;
 non terminal Expression     expression;
-non terminal Digit          constant, digit;
+non terminal Digit          constant;
 
 /* -------------Seccion de Predencia y Asociatividad----------- */
 
@@ -98,6 +85,8 @@ non terminal Digit          constant, digit;
     Por eso no la usamos.
     Además indica si se asocia a izquierda o derecha.
 */
+precedence left  OP_ADD, OP_SUB;
+precedence left  OP_MULT, OP_DIV;
 
 /* ------------------- Seccion de la Gramatica ------------------------ */
 
@@ -112,7 +101,11 @@ block                   ::= BEGIN statements: stms END SEMI
                             :};
 statements              ::= statement: stm
                             {:
-                              RESULT = new StatementList().addElement(stm);
+                              StatementList stmList = new StatementList();
+
+                              stmList.addElement(stm);
+
+                              RESULT = stmList;
                             :}  |
                             statement: stm statements: stms
                             {:
@@ -124,30 +117,87 @@ statements              ::= statement: stm
 
                               RESULT = stms;
                             :};
-statement               ::= assigment_statement: astm |
+statement               ::= assigment_statement: astm
+                            {:
+                              RESULT = astm;
+                            :} |
                             null_statement: nstm
                             {:
                               RESULT = nstm;
                             :}  |
-                            for_statement: fstm       |
-                            if_statement: istm        |
-                            input_statement: instm    |
-                            output_statement: ostmn;
-assigment_statement     ::= identifier : id EQUAL expression : ex SEMI;
-if_statement            ::= IF expression: ex THEN statements: stm1 ELSE statements: stm2 ENDIF;
-for_statement           ::= FOR identifier: id IN constant: cons1 TO constant: cons2 LOOP statements: stm ENDLOOP;
-input_statement         ::= INPUT PIZQ identifier: id PDER SEMI;
-output_statement        ::= OUTPUT PIZQ identifier : id PDER SEMI;
-null_statement          ::= NULL: null SEMI
+                            for_statement: fstm
                             {:
-                              RESULT = new NullStm(null.getLine(), null.getColumn());
+                              RESULT = fstm;
+                            :} |
+                            if_statement: istm
+                            {:
+                              RESULT = istm;
+                            :} |
+                            input_statement: instm
+                            {:
+                              RESULT = instm;
+                            :} |
+                            output_statement: ostmn
+                            {:
+                              RESULT = ostmn;
+                            :} |;
+assigment_statement     ::= identifier : id EQUAL: eq expression : ex SEMI
+                            {:
+                              RESULT = new AssigmentStm(id, ex, eq.getLine(), eq.getColumn());
                             :};
-expression              ::= expression: ex1 OP_ADD expression: ex2  |
-                            expression: ex1 OP_SUB expression: ex2  |
-                            expression: ex1 OP_MULT expression: ex2 |
-                            expression: ex1 OP_DIV expression: ex2  |
-                            PIZQ  expression: ex  PDER              |
-                            constant: cons                          |
-                            identifier: id;
-constant                ::= DIGITO: digit;
-identifier              ::= IDENTIFIER : id;
+if_statement            ::= IF: ifStm expression: ex THEN statements: stm1 ELSE statements: stm2 ENDIF
+                            {:
+                              RESULT = new IfStm(ex, stm1, stm2, ifStm.getLine(), ifStm.getColumn());
+                            :};
+for_statement           ::= FOR: forStm identifier: id IN constant: cons1 TO constant: cons2 LOOP statements: stm ENDLOOP
+                            {:
+                              RESULT = new ForStm(id, cons1, cons2, stm, forStm.getLine(), forStm.getColumn());
+                            :};
+input_statement         ::= INPUT PIZQ identifier: id PDER SEMI
+                            {:
+                              RESULT = new InputStm(id, id.getLine(), id.getColumn());
+                            :};
+output_statement        ::= OUTPUT PIZQ identifier : id PDER SEMI
+                            {:
+                              RESULT = new OutputStm(id, id.getLine(), id.getColumn());
+                            :};
+null_statement          ::= NULL: nullStm SEMI
+                            {:
+                              RESULT = new NullStm(nullStm.getLine(), nullStm.getColumn());
+                            :};
+expression              ::= expression: ex1 OP_ADD: add expression: ex2
+                            {:
+                              RESULT = new ArithmeticOperationExpression(ex1, ex2, OperationType.ADD, add.getLine(), add.getColumn());
+                            :} |
+                            expression: ex1 OP_SUB: sub expression: ex2
+                            {:
+                              RESULT = new ArithmeticOperationExpression(ex1, ex2, OperationType.SUB, sub.getLine(), sub.getColumn());
+                            :} |
+                            expression: ex1 OP_MULT: mult expression: ex2
+                            {:
+                              RESULT = new ArithmeticOperationExpression(ex1, ex2, OperationType.MULT, mult.getLine(), mult.getColumn());
+                            :} |
+                            expression: ex1 OP_DIV: div expression: ex2
+                            {:
+                              RESULT = new ArithmeticOperationExpression(ex1, ex2, OperationType.DIV, div.getLine(), div.getColumn());
+                            :} |
+                            PIZQ  expression: ex  PDER
+                            {:
+                              RESULT = ex;
+                            :} |
+                            constant: cons
+                            {:
+                              RESULT = new DigitExp(cons, cons.getLine(), cons.getColumn());
+                            :} |
+                            identifier: id
+                            {:
+                              RESULT = new IdentifierExp(id, id.getLine(), id.getColumn());
+                            :};
+constant                ::= DIGITO: d
+                            {:
+                              RESULT = new Digit((Integer) d.getValue(), d.getLine(), d.getColumn());
+                            :};
+identifier              ::= IDENTIFIER : id
+                            {:
+                              RESULT = new Identifier((String) id.getValue(), id.getLine(), id.getColumn());
+                            :};

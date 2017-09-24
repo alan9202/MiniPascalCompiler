@@ -3,6 +3,7 @@ package com.uaem.main;
 
 import java_cup.runtime.*;
 import java.io.Reader;
+import com.uaem.classes.Token;
 
 /* ------ Seccion de opciones y declaraciones de JFlex -------------- */
 %% //inicio de opciones
@@ -38,7 +39,7 @@ import java.io.Reader;
     /*
     	Se generara un objeto java_cup.Symbol para el tipo de token encontrado junto con su valor
 	*/
-    private Symbol symbol(int type, int yyline, yycolumn, Object value) {
+    private Symbol symbol(int type, int yyline, int yycolumn, Object value) {
         return new Symbol(type, yyline, yycolumn, value);
     }
 %}
@@ -112,7 +113,7 @@ Identificador = [a-z]*
     	Retorna que el token INTEGER, declarado en la clase sym, fue encontrado.
 	*/
     "Integer" {
-        return symbol(sym.INTEGER, yyline + 1, yycolumn + 1, new Token("Integer", yyline + 1, yycolumn + 1));;
+        return symbol(sym.INTEGER, yyline + 1, yycolumn + 1, new Token("Integer", yyline + 1, yycolumn + 1));
     }
 
     /*

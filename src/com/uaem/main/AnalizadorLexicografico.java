@@ -5,6 +5,7 @@ package com.uaem.main;
 
 import java_cup.runtime.*;
 import java.io.Reader;
+import com.uaem.classes.Token;
 
 /* ------ Seccion de opciones y declaraciones de JFlex -------------- */
 
@@ -304,17 +305,17 @@ class AnalizadorLexicografico implements java_cup.runtime.Scanner {
   private int zzFinalHighSurrogate = 0;
 
   /* user code: */
-    /*	
-    	Se generara un objeto java_cup.Symbol para guardar el tipo de token encontrado 
+    /*
+    	Se generara un objeto java_cup.Symbol para guardar el tipo de token encontrado
 	*/
     private Symbol symbol(int type) {
         return new Symbol(type, yyline, yycolumn);
     }
-    
-    /*	
+
+    /*
     	Se generara un objeto java_cup.Symbol para el tipo de token encontrado junto con su valor
 	*/
-    private Symbol symbol(int type, Object value) {
+    private Symbol symbol(int type, int yyline, int yycolumn, Object value) {
         return new Symbol(type, yyline, yycolumn, value);
     }
 
@@ -703,11 +704,11 @@ class AnalizadorLexicografico implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { return symbol(sym.IDENTIFIER, yytext());
+            { return symbol(sym.IDENTIFIER, yyline + 1, yycolumn + 1, new Token(yytext(), yyline + 1, yycolumn + 1));
             }
           case 31: break;
           case 2: 
-            { throw new Error("Caracter ilegal <"+yytext()+">");
+            { throw new Error("Caracter ilegal <" + yytext() + ">");
             }
           case 32: break;
           case 3: 
@@ -715,111 +716,111 @@ class AnalizadorLexicografico implements java_cup.runtime.Scanner {
             }
           case 33: break;
           case 4: 
-            { return symbol(sym.DIGITO, yytext());
+            { return symbol(sym.DIGITO, yyline + 1, yycolumn + 1, new Token(new Integer(Integer.parseInt(yytext())), yyline + 1, yycolumn + 1));
             }
           case 34: break;
           case 5: 
-            { return symbol(sym.TWOP);
+            { return symbol(sym.TWOP, yyline + 1, yycolumn + 1, new Token(":", yyline + 1, yycolumn + 1));
             }
           case 35: break;
           case 6: 
-            { return symbol(sym.SEMI);
+            { return symbol(sym.SEMI, yyline + 1, yycolumn + 1, new Token(";", yyline + 1, yycolumn + 1));
             }
           case 36: break;
           case 7: 
-            { return symbol(sym.PIZQ);
+            { return symbol(sym.PIZQ, yyline + 1, yycolumn + 1, new Token("(", yyline + 1, yycolumn + 1));
             }
           case 37: break;
           case 8: 
-            { return symbol(sym.PDER);
+            { return symbol(sym.PDER, yyline + 1, yycolumn + 1, new Token(")", yyline + 1, yycolumn + 1));
             }
           case 38: break;
           case 9: 
-            { return symbol(sym.OP_ADD);
+            { return symbol(sym.OP_ADD, yyline + 1, yycolumn + 1, new Token("+", yyline + 1, yycolumn + 1));
             }
           case 39: break;
           case 10: 
-            { return symbol(sym.OP_SUB);
+            { return symbol(sym.OP_SUB, yyline + 1, yycolumn + 1, new Token("-", yyline + 1, yycolumn + 1));
             }
           case 40: break;
           case 11: 
-            { return symbol(sym.OP_MULT);
+            { return symbol(sym.OP_MULT, yyline + 1, yycolumn + 1, new Token("*", yyline + 1, yycolumn + 1));
             }
           case 41: break;
           case 12: 
-            { return symbol(sym.OP_DIV);
+            { return symbol(sym.OP_DIV, yyline + 1, yycolumn + 1, new Token("/", yyline + 1, yycolumn + 1));
             }
           case 42: break;
           case 13: 
-            { return symbol(sym.EQUAL);
+            { return symbol(sym.EQUAL, yyline + 1, yycolumn + 1, new Token(":=", yyline + 1, yycolumn + 1));
             }
           case 43: break;
           case 14: 
-            { return symbol(sym.IS);
+            { return symbol(sym.IS, yyline + 1, yycolumn + 1, new Token("is", yyline + 1, yycolumn + 1));
             }
           case 44: break;
           case 15: 
-            { return symbol(sym.IN);
+            { return symbol(sym.IN, yyline + 1, yycolumn + 1, new Token("in", yyline + 1, yycolumn + 1));
             }
           case 45: break;
           case 16: 
-            { return symbol(sym.IF);
+            { return symbol(sym.IF, yyline + 1, yycolumn + 1, new Token("if", yyline + 1, yycolumn + 1));
             }
           case 46: break;
           case 17: 
-            { return symbol(sym.TO);
+            { return symbol(sym.TO, yyline + 1, yycolumn + 1, new Token("to", yyline + 1, yycolumn + 1));
             }
           case 47: break;
           case 18: 
-            { return symbol(sym.END);
+            { return symbol(sym.END, yyline + 1, yycolumn + 1, new Token("end", yyline + 1, yycolumn + 1));
             }
           case 48: break;
           case 19: 
-            { return symbol(sym.FOR);
+            { return symbol(sym.FOR, yyline + 1, yycolumn + 1, new Token("for", yyline + 1, yycolumn + 1));
             }
           case 49: break;
           case 20: 
-            { return symbol(sym.ELSE);
+            { return symbol(sym.ELSE, yyline + 1, yycolumn + 1, new Token("else", yyline + 1, yycolumn + 1));
             }
           case 50: break;
           case 21: 
-            { return symbol(sym.NULL);
+            { return symbol(sym.NULL, yyline + 1, yycolumn + 1, new Token("null", yyline + 1, yycolumn + 1));
             }
           case 51: break;
           case 22: 
-            { return symbol(sym.THEN);
+            { return symbol(sym.THEN, yyline + 1, yycolumn + 1, new Token("then", yyline + 1, yycolumn + 1));
             }
           case 52: break;
           case 23: 
-            { return symbol(sym.LOOP);
+            { return symbol(sym.LOOP, yyline + 1, yycolumn + 1, new Token("loop", yyline + 1, yycolumn + 1));
             }
           case 53: break;
           case 24: 
-            { return symbol(sym.ENDIF);
+            { return symbol(sym.ENDIF, yyline + 1, yycolumn + 1, new Token("endif", yyline + 1, yycolumn + 1));
             }
           case 54: break;
           case 25: 
-            { return symbol(sym.INPUT);
+            { return symbol(sym.INPUT, yyline + 1, yycolumn + 1, new Token("input", yyline + 1, yycolumn + 1));
             }
           case 55: break;
           case 26: 
-            { return symbol(sym.BEGIN);
+            { return symbol(sym.BEGIN, yyline + 1, yycolumn + 1, new Token("begin", yyline + 1, yycolumn + 1));
             }
           case 56: break;
           case 27: 
-            { return symbol(sym.OUTPUT);
+            { return symbol(sym.OUTPUT, yyline + 1, yycolumn + 1, new Token("output", yyline + 1, yycolumn + 1));
             }
           case 57: break;
           case 28: 
-            { return symbol(sym.ENDLOOP);
+            { return symbol(sym.ENDLOOP, yyline + 1, yycolumn + 1, new Token("endloop", yyline + 1, yycolumn + 1));
             }
           case 58: break;
           case 29: 
-            { return symbol(sym.INTEGER);
+            { return symbol(sym.INTEGER, yyline + 1, yycolumn + 1, new Token("Integer", yyline + 1, yycolumn + 1));
             }
           case 59: break;
           case 30: 
-            { return symbol(sym.PROCEDURE);
+            { return symbol(sym.PROCEDURE, yyline + 1, yycolumn + 1, new Token("procedure", yyline + 1, yycolumn + 1));
             }
           case 60: break;
           default:
