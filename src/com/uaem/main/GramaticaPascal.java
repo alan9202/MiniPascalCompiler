@@ -3,8 +3,8 @@ package com.uaem.main;
 public class GramaticaPascal {
 
     public static void main(String[] args) {
-        generarClases();
-//        ejecutarAnalisis();
+//        generarClases();
+        ejecutarAnalisis();
     }
     
     public static void generarClases(){

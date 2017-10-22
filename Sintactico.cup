@@ -140,7 +140,7 @@ statement               ::= assigment_statement: astm
                             output_statement: ostmn
                             {:
                               RESULT = ostmn;
-                            :} |;
+                            :};
 assigment_statement     ::= identifier : id EQUAL: eq expression : ex SEMI
                             {:
                               RESULT = new AssigmentStm(id, ex, eq.getLine(), eq.getColumn());
