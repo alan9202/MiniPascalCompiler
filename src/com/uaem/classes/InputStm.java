@@ -1,6 +1,6 @@
 package com.uaem.classes;
 
-import com.uaem.util.Util;
+import com.uaem.util.Heap;
 
 public class InputStm extends Statement{
 
@@ -16,7 +16,7 @@ public class InputStm extends Statement{
 
     @Override
     public void doAction() throws Exception {
-        Util.read(id.getIdentifier());
+        Heap.read(id.getIdentifier());
     }
 
     public Identifier getId() {

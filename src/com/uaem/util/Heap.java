@@ -5,17 +5,22 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-public class Util {
+public class Heap {
     
     private static final Map<String, Integer> HEAP = new HashMap<>();
     private static final String NUMBER_REGEX = "(?<=\\s|^)\\d+(?=\\s|$)";
     
-    public static void localHeap(String identifier, String value) throws Exception
+    public static void localHeap(String identifier, Integer value) throws Exception
     {
-        Heap(identifier, getValueFromExpression(value));
+        localHeap(identifier, value.toString());
     }
     
-    private static void Heap(String identifier, Integer value) throws Exception
+    public static void localHeap(String identifier, String value) throws Exception
+    {
+        heap(identifier, getValueFromExpression(value));
+    }
+    
+    private static void heap(String identifier, Integer value) throws Exception
     {
         if(HEAP.isEmpty())
         {
@@ -129,6 +134,6 @@ public class Util {
             throw new Exception("Debe introducir un valor de tipo Integer.");
         }
         
-        Heap(identifier, intValue);
+        heap(identifier, intValue);
     }
 }

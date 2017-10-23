@@ -32,6 +32,7 @@ begin
 			a := 6;
 		endif
 		output(a);
+		output (b);
 	endloop
 
 	input(b);

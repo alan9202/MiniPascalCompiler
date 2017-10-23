@@ -1,5 +1,8 @@
 package com.uaem.classes;
 
+import com.uaem.util.ExpressionsTools;
+import com.uaem.util.Heap;
+
 public class ForStm extends Statement{
 
     private Identifier id;
@@ -19,7 +22,22 @@ public class ForStm extends Statement{
     }
     
     @Override
-    public void doAction() {
+    public void doAction() throws Exception {
+        Heap.localHeap(id.getIdentifier(), cons1.getValue());
+        
+        ExpressionsTools tool = new ExpressionsTools();
+        int idHeap = Heap.searchInHeap(id.getIdentifier());
+        
+        while(idHeap <= cons2.getValue()) {
+            
+            idHeap++;
+            
+            tool.executeStatementList(stms);
+            
+            Heap.localHeap(id.getIdentifier(), idHeap);
+
+            idHeap = Heap.searchInHeap(id.getIdentifier());
+        }
     }
 
     public Identifier getId() {

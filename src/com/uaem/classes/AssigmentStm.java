@@ -1,6 +1,6 @@
 package com.uaem.classes;
 
-import com.uaem.util.Util;
+import com.uaem.util.Heap;
 
 public class AssigmentStm extends Statement{
     
@@ -25,14 +25,14 @@ public class AssigmentStm extends Statement{
                 //DigitExpression
                 DigitExp digitExp = (DigitExp) exp;
                 
-                Util.localHeap(id.getIdentifier(), digitExp.getDigit().getValue().toString());
+                Heap.localHeap(id.getIdentifier(), digitExp.getDigit().getValue());
                 
                 break;
             case 1:
                 //IdentifierExpression
                 IdentifierExp identifierExp = (IdentifierExp) exp;
                 
-                Util.localHeap(id.getIdentifier(), identifierExp.getId().getIdentifier());
+                Heap.localHeap(id.getIdentifier(), identifierExp.getId().getIdentifier());
                 
                 break;
             case 2:
@@ -40,7 +40,7 @@ public class AssigmentStm extends Statement{
                 ArithmeticOperationExpression arithmeticExp = (ArithmeticOperationExpression) exp;
                 
                 arithmeticExp.doAction();
-                Util.localHeap(id.getIdentifier(), String.valueOf(arithmeticExp.getResult()));
+                Heap.localHeap(id.getIdentifier(), String.valueOf(arithmeticExp.getResult()));
                 
                 break;
             default:

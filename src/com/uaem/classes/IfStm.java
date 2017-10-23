@@ -1,5 +1,7 @@
 package com.uaem.classes;
 
+import com.uaem.util.ExpressionsTools;
+
 public class IfStm extends Statement{
     
     private Expression ex;
@@ -17,8 +19,16 @@ public class IfStm extends Statement{
     }
     
     @Override
-    public void doAction() {
+    public void doAction() throws Exception {
+        ExpressionsTools tool = new ExpressionsTools();
+        int value = tool.getExpressionValue(this.ex);
         
+        if(value == 0) {
+            tool.executeStatementList(this.stm2);
+        }
+        else {
+            tool.executeStatementList(this.stm1);
+        }
     }
 
     public Expression getEx() {
