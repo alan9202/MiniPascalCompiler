@@ -1,5 +1,7 @@
 package com.uaem.classes;
 
+import com.uaem.util.Util;
+
 public class OutputStm extends Statement{
     
     private Identifier id;
@@ -13,7 +15,8 @@ public class OutputStm extends Statement{
     }
 
     @Override
-    public void doAction() {
+    public void doAction() throws Exception {
+        Util.print(id.getIdentifier());
     }
 
     public Identifier getId() {

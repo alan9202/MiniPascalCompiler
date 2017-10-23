@@ -48,7 +48,8 @@ parser code {:
     public static void main(String[] args) {
         try {
             AnalizadorSintactico asin = new AnalizadorSintactico(new AnalizadorLexicografico( new FileReader(args[0])));
-            Object result = asin.parse().value;
+            Block result = (Block) asin.parse().value;
+            result.doAction();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -90,9 +91,15 @@ precedence left  OP_MULT, OP_DIV;
 
 /* ------------------- Seccion de la Gramatica ------------------------ */
 
-program                 ::= PROCEDURE header body;
+program                 ::= PROCEDURE header body: bd
+                            {:
+                              RESULT = bd;
+                            :};
 header                  ::= identifier IS;
-body                    ::= declarations block;
+body                    ::= declarations block: blck
+                            {:
+                              RESULT = blck;
+                            :};
 declarations            ::= identifier TWOP INTEGER SEMI |
                             identifier TWOP INTEGER SEMI declarations;
 block                   ::= BEGIN statements: stms END SEMI

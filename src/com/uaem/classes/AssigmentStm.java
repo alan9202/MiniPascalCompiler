@@ -1,5 +1,7 @@
 package com.uaem.classes;
 
+import com.uaem.util.Util;
+
 public class AssigmentStm extends Statement{
     
     private Identifier id;
@@ -15,7 +17,35 @@ public class AssigmentStm extends Statement{
     }
     
     @Override
-    public void doAction() {
+    public void doAction() throws Exception {
+        int kindInstance = (exp instanceof DigitExp) ? 0 : (exp instanceof IdentifierExp) ? 1 : (exp instanceof ArithmeticOperationExpression) ? 2 : 3;
+        
+        switch(kindInstance) {
+            case 0:
+                //DigitExpression
+                DigitExp digitExp = (DigitExp) exp;
+                
+                Util.localHeap(id.getIdentifier(), digitExp.getDigit().getValue().toString());
+                
+                break;
+            case 1:
+                //IdentifierExpression
+                IdentifierExp identifierExp = (IdentifierExp) exp;
+                
+                Util.localHeap(id.getIdentifier(), identifierExp.getId().getIdentifier());
+                
+                break;
+            case 2:
+                //ArithmeticOperationExpression
+                ArithmeticOperationExpression arithmeticExp = (ArithmeticOperationExpression) exp;
+                
+                arithmeticExp.doAction();
+                Util.localHeap(id.getIdentifier(), String.valueOf(arithmeticExp.getResult()));
+                
+                break;
+            default:
+                throw new Exception("Tipo de instancia a asignar no conocida. AssigmentStms Line: " + this.getLine() + " Column: " + this.getColumn());
+        }
     }
 
     public Identifier getId() {

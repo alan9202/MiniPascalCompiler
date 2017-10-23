@@ -15,7 +15,7 @@ public class Util {
         Heap(identifier, getValueFromExpression(value));
     }
     
-    public static void Heap(String identifier, Integer value) throws Exception
+    private static void Heap(String identifier, Integer value) throws Exception
     {
         if(HEAP.isEmpty())
         {
@@ -70,7 +70,7 @@ public class Util {
         }
     }
     
-    private static Integer searchInHeap(String identifier)
+    public static Integer searchInHeap(String identifier)
     {
         Integer value;
         
