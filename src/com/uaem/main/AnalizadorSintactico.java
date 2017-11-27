@@ -10,6 +10,7 @@ import java_cup.runtime.*;
 import java.io.FileReader;
 import com.uaem.util.*;
 import com.uaem.classes.*;
+import java.io.File;
 
 /** CUP v0.11a beta 20060608 generated parser.
   * @version Sun Oct 22 17:55:30 CDT 2017
@@ -226,9 +227,9 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
     /*
         Metodo main para garantizar la ejecucion del analizador lexico y sintactico, ademas que se pase como parametro la tabla de simbolos correspondiente.
     */
-    public static void main(String[] args) {
+    public static void exect(File file) {
         try {
-            AnalizadorSintactico asin = new AnalizadorSintactico(new AnalizadorLexicografico( new FileReader(args[0])));
+            AnalizadorSintactico asin = new AnalizadorSintactico(new AnalizadorLexicografico( new FileReader(file)));
             Block result = (Block) asin.parse().value;
             result.doAction();
         } catch (Exception ex) {
